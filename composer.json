@@ -1,0 +1,32 @@
+{
+     "name": "bear/middleware",
+     "description": "PSR-7 BEAR.Sunday middleware",
+     "keywords": [
+          "PSR7",
+          "Relay",
+          "BEAR.Sunday"
+     ],
+     "license": "MIT",
+     "require": {
+          "bear/sunday": "~1.0",
+          "psr/http-message": "~1.0",
+          "relay/relay": "~1.0",
+          "relay/middleware": "~1.0",
+          "zendframework/zend-diactoros": "~1.0"
+     },
+     "autoload": {
+          "psr-4": {
+               "BEAR\\Middleware\\": "src/"
+          }
+     },
+     "autoload-dev": {
+          "psr-4": {
+               "BEAR\\Middleware\\": [
+                    "tests/",
+                    "tests/Fake"
+               ]
+          }
+     },
+     "minimum-stability": "dev",
+     "prefer-stable": true
+}
