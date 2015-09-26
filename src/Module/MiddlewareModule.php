@@ -4,9 +4,8 @@
  *
  * @license http://opensource.org/licenses/MIT MIT
  */
-namespace BEAR\Middleware;
+namespace BEAR\Middleware\Module;
 
-use BEAR\Middleware\Module\RequestProvider;
 use BEAR\Resource\Annotation\AppName;
 use BEAR\Sunday\Module\SundayModule;
 use Psr\Http\Message\RequestInterface;

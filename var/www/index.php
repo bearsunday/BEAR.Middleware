@@ -1,7 +1,7 @@
 <?php
 
 use BEAR\Middleware\Handler\ResourceHandler;
-use BEAR\Middleware\MiddlewareModule;
+use BEAR\Middleware\Module\MiddlewareModule;
 use BEAR\Middleware\Resolver;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Ray\Di\Injector;
