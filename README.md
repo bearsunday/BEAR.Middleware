@@ -1,9 +1,6 @@
 # BEAR.Middleware
 
-## PSR-7 Relay Middleware for BEAR.Sunday
+## PSR-7 Relay Middleware
 
-## Demo
+https://github.com/bearsunday/BEAR.Project
 
-```
-php -S localhost:8080 var/www/index.php 
-```
