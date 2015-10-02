@@ -53,7 +53,7 @@ final class ResourceHandler
         $server['REQUEST_URI'] = $request->getUri()->getPath();
         $globals = [
             '_GET' => $request->getQueryParams(),
-            '_POST' => $request->getBody()
+            '_POST' => $request->getParsedBody()
         ];
         $req = $this->router->match($globals, $server);
         $resourceObject = $this->resource->{$req->method}->uri($req->path)->withQuery($req->query)->eager->request();
