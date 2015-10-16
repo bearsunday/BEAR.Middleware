@@ -7,6 +7,7 @@
 namespace BEAR\Middleware\Handler;
 
 use BEAR\Resource\ResourceInterface;
+use BEAR\Resource\ResourceObject;
 use BEAR\Sunday\Extension\Router\RouterInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -57,12 +58,28 @@ final class ResourceHandler
         ];
         $req = $this->router->match($globals, $server);
         $resourceObject = $this->resource->{$req->method}->uri($req->path)->withQuery($req->query)->eager->request();
+        $response = $this->write($response, $resourceObject);
+
+        return $response;
+    }
+
+    /**
+     * @param Response       $response
+     * @param ResourceObject $resourceObject
+     *
+     * @return Response
+     */
+    private function write(Response $response, ResourceObject $resourceObject)
+    {
+        $responseBody = (string) $resourceObject;
         $response = $response->withStatus($resourceObject->code);
         foreach ($resourceObject->headers as $name => $value) {
             $response = $response->withHeader($name, $value);
         }
-        $response->getBody()->write((string) $resourceObject);
+        $response->getBody()->write($responseBody);
 
         return $response;
     }
 }
+
+
