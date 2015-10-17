@@ -6,12 +6,15 @@
  */
 namespace BEAR\Middleware\Handler;
 
+use BEAR\Middleware\Annotation\Stream;
 use BEAR\Resource\ResourceInterface;
 use BEAR\Resource\ResourceObject;
 use BEAR\Sunday\Extension\Router\RouterInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface;
+use Ray\Di\Di\Inject;
+use Zend\Diactoros\Stream as ZendStream;
 
 final class ResourceHandler
 {
@@ -25,10 +28,23 @@ final class ResourceHandler
      */
     private $router;
 
-    public function __construct(ResourceInterface $resource, RouterInterface $router)
+    private $stream;
+
+    /**
+     * @param ResourceInterface $resource
+     * @param RouterInterface   $router
+     * @param resource          $stream
+     *
+     * @Stream("stream")
+     */
+    public function __construct(
+        ResourceInterface $resource,
+        RouterInterface $router,
+        $stream)
     {
         $this->resource = $resource;
         $this->router = $router;
+        $this->stream = $stream;
     }
 
     /**
@@ -52,7 +68,7 @@ final class ResourceHandler
         $server = $request->getServerParams();
         $server['REQUEST_METHOD'] = $request->getMethod();
         $server['REQUEST_URI'] = $request->getUri()->getPath();
-        $globals = [
+        $globals = $GLOBALS + [
             '_GET' => $request->getQueryParams(),
             '_POST' => $request->getParsedBody()
         ];
@@ -71,12 +87,12 @@ final class ResourceHandler
      */
     private function write(Response $response, ResourceObject $resourceObject)
     {
-        $responseBody = (string) $resourceObject;
+        (string) $resourceObject; // write stream
         $response = $response->withStatus($resourceObject->code);
         foreach ($resourceObject->headers as $name => $value) {
             $response = $response->withHeader($name, $value);
         }
-        $response->getBody()->write($responseBody);
+        $response = $response->withBody(new ZendStream($this->stream));
 
         return $response;
     }

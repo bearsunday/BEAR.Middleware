@@ -16,10 +16,13 @@ class RequestHandlerTest extends \PHPUnit_Framework_TestCase
 {
     private $resource;
 
+    private $stream;
+
     protected function setUp()
     {
         $injector = new Injector(new ResourceModule(__NAMESPACE__));
         $this->resource = $injector->getInstance(ResourceInterface::class);
+        $this->stream = fopen("php://temp/", 'r+');
     }
 
     public function testMissingRoute()
@@ -28,7 +31,7 @@ class RequestHandlerTest extends \PHPUnit_Framework_TestCase
         $request = ServerRequestFactory::fromGlobals();
         $request = $request->withUri(new Uri('http://localhost/not_found'));
         $response = new Response;
-        $requestHandler = new ResourceHandler($this->resource, new WebRouter('page://self'));
+        $requestHandler = new ResourceHandler($this->resource, new WebRouter('page://self'), $this->stream);
         $requestHandler($request, $response, function ($req, $resp) {
             $this->assertInstanceOf(Response::class, $resp);
         });
@@ -39,7 +42,7 @@ class RequestHandlerTest extends \PHPUnit_Framework_TestCase
         $request = ServerRequestFactory::fromGlobals();
         $request = $request->withUri(new Uri('http://localhost/'));
         $response = new Response;
-        $requestHandler = new ResourceHandler($this->resource, new WebRouter('page://self'));
+        $requestHandler = new ResourceHandler($this->resource, new WebRouter('page://self'), $this->stream);
         $requestHandler($request, $response, function ($req, $resp) {
             $this->assertInstanceOf(Response::class, $resp);
         });
