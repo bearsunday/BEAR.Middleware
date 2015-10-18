@@ -50,16 +50,13 @@ class StreamRenderer implements RenderInterface
      */
     public function render(ResourceObject $ro)
     {
-        if (! is_array($ro->body)) {
-            return $this->scalarBody($ro);
-        }
-        foreach ($ro->body as &$item) {
-            if (is_resource($item) && get_resource_type($item) == 'stream') {
-                $item = $this->pushStream($item);
-            }
+        if (is_array($ro->body)) {
+            $this->pushArrayBody($ro);
+
+            return $this->renderer->render($ro);
         }
 
-        return $this->renderer->render($ro);
+        return $this->pushScalarBody($ro);
     }
 
     /**
@@ -141,12 +138,24 @@ class StreamRenderer implements RenderInterface
      *
      * @return string
      */
-    private function scalarBody(ResourceObject $ro)
+    private function pushScalarBody(ResourceObject $ro)
     {
         if (is_resource($ro->body) && get_resource_type($ro->body) == 'stream') {
             return $this->pushStream($ro->body);
         }
 
         return $this->renderer->render($ro);
+    }
+
+    /**
+     * @param ResourceObject $ro
+     */
+    private function pushArrayBody(ResourceObject $ro)
+    {
+        foreach ($ro->body as &$item) {
+            if (is_resource($item) && get_resource_type($item) == 'stream') {
+                $item = $this->pushStream($item);
+            }
+        }
     }
 }
