@@ -6,12 +6,15 @@
  */
 namespace BEAR\Middleware\Handler;
 
+use BEAR\Middleware\Module\StreamRenderer;
+use BEAR\Resource\RenderInterface;
 use BEAR\Resource\ResourceInterface;
 use BEAR\Resource\ResourceObject;
 use BEAR\Sunday\Extension\Router\RouterInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Diactoros\Stream;
 
 final class ResourceHandler
 {
@@ -25,10 +28,24 @@ final class ResourceHandler
      */
     private $router;
 
-    public function __construct(ResourceInterface $resource, RouterInterface $router)
-    {
+    /**
+     * @var StreamRenderer
+     */
+    private $render;
+
+    /**
+     * @param ResourceInterface $resource
+     * @param RouterInterface   $router
+     * @param RenderInterface   $render
+     */
+    public function __construct(
+        ResourceInterface $resource,
+        RouterInterface $router,
+        RenderInterface $render
+    ) {
         $this->resource = $resource;
         $this->router = $router;
+        $this->render = $render;
     }
 
     /**
@@ -58,7 +75,7 @@ final class ResourceHandler
         ];
         $req = $this->router->match($globals, $server);
         $resourceObject = $this->resource->{$req->method}->uri($req->path)->withQuery($req->query)->eager->request();
-        $response = $this->write($response, $resourceObject);
+        $response = $this->toPsr7Response($response, $resourceObject);
 
         return $response;
     }
@@ -69,17 +86,17 @@ final class ResourceHandler
      *
      * @return Response
      */
-    private function write(Response $response, ResourceObject $resourceObject)
+    private function toPsr7Response(Response $response, ResourceObject $resourceObject)
     {
-        $responseBody = (string) $resourceObject;
+        $bodyString = (string) $resourceObject;
+        /** @var $response Response */
         $response = $response->withStatus($resourceObject->code);
         foreach ($resourceObject->headers as $name => $value) {
             $response = $response->withHeader($name, $value);
         }
-        $response->getBody()->write($responseBody);
+        $stream = $this->render->toStream($bodyString);
+        $response = $response->withBody(new Stream($stream));
 
         return $response;
     }
 }
-
-

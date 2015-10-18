@@ -7,15 +7,14 @@
 namespace BEAR\Middleware\Module;
 
 use Ray\Di\ProviderInterface;
-use Zend\Diactoros\ServerRequestFactory;
 
-class RequestProvider implements ProviderInterface
+class StreamProvider implements ProviderInterface
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function get()
     {
-        return ServerRequestFactory::fromGlobals();
+        return fopen("php://temp/", 'r+');
     }
 }
