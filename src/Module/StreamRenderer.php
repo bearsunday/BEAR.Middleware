@@ -45,7 +45,6 @@ class StreamRenderer implements RenderInterface
         $this->stream = $stream;
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -81,7 +80,6 @@ class StreamRenderer implements RenderInterface
         return $this->mergeStream($string, $this->stream);
     }
 
-
     /**
      * @param resource $item
      *
@@ -98,7 +96,7 @@ class StreamRenderer implements RenderInterface
     }
 
     /**
-     * @param string $string
+     * @param string   $string
      * @param resource $stream
      *
      * @return resource

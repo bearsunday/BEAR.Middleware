@@ -14,7 +14,7 @@ use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\Diactoros\Uri;
 
-class RequestHandlerTest extends \PHPUnit_Framework_TestCase
+class RequesetHandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ResourceHandler

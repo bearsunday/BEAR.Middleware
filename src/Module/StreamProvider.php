@@ -15,6 +15,6 @@ class StreamProvider implements ProviderInterface
      */
     public function get()
     {
-        return fopen("php://temp/", 'r+');
+        return fopen('php://temp/', 'r+');
     }
 }
