@@ -45,7 +45,6 @@ class StreamRenderer implements RenderInterface
         $this->stream = $stream;
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -81,7 +80,6 @@ class StreamRenderer implements RenderInterface
         return $this->mergeStream($string, $this->stream);
     }
 
-
     /**
      * @param resource $item
      *
@@ -98,7 +96,7 @@ class StreamRenderer implements RenderInterface
     }
 
     /**
-     * @param string $string
+     * @param string   $string
      * @param resource $stream
      *
      * @return resource
@@ -145,7 +143,7 @@ class StreamRenderer implements RenderInterface
      */
     private function scalarBody(ResourceObject $ro)
     {
-        if (is_resource($ro->body)) {
+        if (is_resource($ro->body) && get_resource_type($ro->body) == 'stream') {
             return $this->pushStream($ro->body);
         }
 

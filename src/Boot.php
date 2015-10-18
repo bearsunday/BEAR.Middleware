@@ -7,9 +7,9 @@
 namespace BEAR\Middleware;
 
 use BEAR\AppMeta\AbstractAppMeta;
+use BEAR\Middleware\Exception\InvalidContextException;
+use BEAR\Middleware\Module\AppMetaModule;
 use BEAR\Middleware\Module\StreamModule;
-use BEAR\Package\AppMetaModule;
-use BEAR\Package\Exception\InvalidContextException;
 use Ray\Compiler\DiCompiler;
 use Ray\Compiler\Exception\NotCompiled;
 use Ray\Compiler\ScriptInjector;
@@ -51,7 +51,7 @@ class Boot
                 $class = 'BEAR\Package\Context\\' . ucwords($context) . 'Module';
             }
             if (! is_a($class, AbstractModule::class, true)) {
-                throw new InvalidContextException($class);
+                throw new InvalidContextException($context);
             }
             $module = new $class($module);
         }

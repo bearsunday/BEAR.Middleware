@@ -14,7 +14,7 @@ use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\Diactoros\Uri;
 
-class RequestHandlerTest extends \PHPUnit_Framework_TestCase
+class RequesetHandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ResourceHandler
@@ -44,7 +44,10 @@ class RequestHandlerTest extends \PHPUnit_Framework_TestCase
             ['http://localhost/item', '{"msg":"hello world","stream":"Konichiwa stream !
 "}'],
             ['http://localhost/one', 'Konichiwa stream !
-']      ];
+'],
+            ['http://localhost/greeting', '{"greeting":"Hello BEAR"}'],
+            ['http://localhost/greeting2', '{"value":"Hello BEAR"}']
+        ];
     }
 
     /**
