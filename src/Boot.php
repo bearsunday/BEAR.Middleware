@@ -7,6 +7,7 @@
 namespace BEAR\Middleware;
 
 use BEAR\AppMeta\AbstractAppMeta;
+use BEAR\Middleware\Module\StreamModule;
 use BEAR\Package\AppMetaModule;
 use BEAR\Package\Exception\InvalidContextException;
 use Doctrine\Common\Cache\Cache;
@@ -26,7 +27,8 @@ class Boot
         try {
             $injector = (new ScriptInjector($appMeta->tmpDir))->getInstance(InjectorInterface::class);
         } catch (NotCompiled $e) {
-            $compiler = new DiCompiler($module, $appMeta->tmpDir);
+            $streamModule = new StreamModule($module);
+            $compiler = new DiCompiler($streamModule, $appMeta->tmpDir);
             $compiler->compile();
             $injector = (new ScriptInjector($appMeta->tmpDir))->getInstance(InjectorInterface::class);
         }

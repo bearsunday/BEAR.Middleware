@@ -6,15 +6,15 @@
  */
 namespace BEAR\Middleware\Handler;
 
-use BEAR\Middleware\Annotation\Stream;
+use BEAR\Middleware\Module\StreamRenderer;
+use BEAR\Resource\RenderInterface;
 use BEAR\Resource\ResourceInterface;
 use BEAR\Resource\ResourceObject;
 use BEAR\Sunday\Extension\Router\RouterInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface;
-use Ray\Di\Di\Inject;
-use Zend\Diactoros\Stream as ZendStream;
+use Zend\Diactoros\Stream;
 
 final class ResourceHandler
 {
@@ -28,23 +28,24 @@ final class ResourceHandler
      */
     private $router;
 
-    private $stream;
+    /**
+     * @var StreamRenderer
+     */
+    private $render;
 
     /**
      * @param ResourceInterface $resource
      * @param RouterInterface   $router
      * @param resource          $stream
-     *
-     * @Stream("stream")
      */
     public function __construct(
         ResourceInterface $resource,
         RouterInterface $router,
-        $stream)
-    {
+        RenderInterface $render
+    ) {
         $this->resource = $resource;
         $this->router = $router;
-        $this->stream = $stream;
+        $this->render = $render;
     }
 
     /**
@@ -68,13 +69,13 @@ final class ResourceHandler
         $server = $request->getServerParams();
         $server['REQUEST_METHOD'] = $request->getMethod();
         $server['REQUEST_URI'] = $request->getUri()->getPath();
-        $globals = $GLOBALS + [
+        $globals = [
             '_GET' => $request->getQueryParams(),
             '_POST' => $request->getParsedBody()
         ];
         $req = $this->router->match($globals, $server);
         $resourceObject = $this->resource->{$req->method}->uri($req->path)->withQuery($req->query)->eager->request();
-        $response = $this->write($response, $resourceObject);
+        $response = $this->toPsr7Response($response, $resourceObject);
 
         return $response;
     }
@@ -85,17 +86,16 @@ final class ResourceHandler
      *
      * @return Response
      */
-    private function write(Response $response, ResourceObject $resourceObject)
+    private function toPsr7Response(Response $response, ResourceObject $resourceObject)
     {
-        (string) $resourceObject; // write stream
+        $bodyString = (string) $resourceObject;
         $response = $response->withStatus($resourceObject->code);
         foreach ($resourceObject->headers as $name => $value) {
             $response = $response->withHeader($name, $value);
         }
-        $response = $response->withBody(new ZendStream($this->stream));
+        $stream = $this->render->toStream($bodyString);
+        $response = $response->withBody(new Stream($stream));
 
         return $response;
     }
 }
-
-
