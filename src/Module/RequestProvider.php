@@ -9,7 +9,7 @@ namespace BEAR\Middleware\Module;
 use Ray\Di\ProviderInterface;
 use Zend\Diactoros\ServerRequestFactory;
 
-class RequestProvider implements  ProviderInterface
+class RequestProvider implements ProviderInterface
 {
     /**
      * @inheritDoc
