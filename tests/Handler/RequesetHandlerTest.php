@@ -2,13 +2,13 @@
 
 namespace BEAR\Middleware;
 
+use BEAR\Middleware\Handler\ResourceHandler;
 use BEAR\Middleware\Module\StreamModule;
 use BEAR\Resource\Exception\ResourceNotFoundException;
 use BEAR\Resource\Module\ResourceModule;
 use BEAR\Resource\RenderInterface;
 use BEAR\Resource\ResourceInterface;
 use BEAR\Sunday\Provide\Router\WebRouter;
-use BEAR\Middleware\Handler\ResourceHandler;
 use Ray\Di\Injector;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;

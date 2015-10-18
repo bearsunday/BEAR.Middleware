@@ -8,7 +8,6 @@ namespace BEAR\Middleware\Module;
 
 use BEAR\Middleware\Annotation\Stream;
 use BEAR\Resource\RenderInterface;
-use BEAR\Sunday\Annotation\DefaultSchemeHost;
 use Ray\Di\AbstractModule;
 use Ray\Di\Scope;
 
