@@ -1,7 +1,7 @@
 <?php
 namespace BEAR\Middleware\Module;
 
-use BEAR\Resource\Module\ResourceModule;
+use BEAR\Sunday\Module\SundayModule;
 use Ray\Di\AbstractModule;
 
 class AppModule extends AbstractModule
@@ -11,6 +11,6 @@ class AppModule extends AbstractModule
      */
     protected function configure()
     {
-        $this->install(new ResourceModule('BEAR\Middleware'));
+        $this->install(new SundayModule);
     }
 }

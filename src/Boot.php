@@ -9,6 +9,7 @@ namespace BEAR\Middleware;
 use BEAR\AppMeta\AbstractAppMeta;
 use BEAR\Middleware\Exception\InvalidContextException;
 use BEAR\Middleware\Module\AppMetaModule;
+use BEAR\Middleware\Module\MiddlewareModule;
 use BEAR\Middleware\Module\StreamModule;
 use Ray\Compiler\DiCompiler;
 use Ray\Compiler\Exception\NotCompiled;
@@ -24,7 +25,7 @@ class Boot
             $injector = (new ScriptInjector($appMeta->tmpDir))->getInstance(InjectorInterface::class);
         } catch (NotCompiled $e) {
             $module = $this->getContxtualModule($appMeta, $contexts);
-            $module->override(new AppMetaModule($appMeta));
+            $module->override(new MiddlewareModule(new AppMetaModule($appMeta)));
             $compiler = new DiCompiler(new StreamModule($module), $appMeta->tmpDir);
             $compiler->compile();
             $injector = (new ScriptInjector($appMeta->tmpDir))->getInstance(InjectorInterface::class);
