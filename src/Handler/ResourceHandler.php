@@ -89,6 +89,7 @@ final class ResourceHandler
     private function toPsr7Response(Response $response, ResourceObject $resourceObject)
     {
         $bodyString = (string) $resourceObject;
+        /** @var $response Response */
         $response = $response->withStatus($resourceObject->code);
         foreach ($resourceObject->headers as $name => $value) {
             $response = $response->withHeader($name, $value);
