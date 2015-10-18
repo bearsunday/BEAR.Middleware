@@ -13,7 +13,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
         $instance = $resolver(Stream::class);
         $this->assertInstanceOf(Stream::class, $instance);
         $instance = $resolver([Stream::class]);
-        $this->assertInstanceOf(Stream::class, $instance);
+        $this->assertInstanceOf(Stream::class, $instance[0]);
         $instance = $resolver(true);
         $this->assertTrue($instance);
     }
