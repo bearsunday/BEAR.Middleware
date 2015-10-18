@@ -44,7 +44,10 @@ class RequestHandlerTest extends \PHPUnit_Framework_TestCase
             ['http://localhost/item', '{"msg":"hello world","stream":"Konichiwa stream !
 "}'],
             ['http://localhost/one', 'Konichiwa stream !
-']      ];
+'],
+            ['http://localhost/greeting', '{"greeting":"Hello BEAR"}'],
+            ['http://localhost/greeting2', '{"value":"Hello BEAR"}']
+        ];
     }
 
     /**

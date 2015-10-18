@@ -145,7 +145,7 @@ class StreamRenderer implements RenderInterface
      */
     private function scalarBody(ResourceObject $ro)
     {
-        if (is_resource($ro->body)) {
+        if (is_resource($ro->body) && get_resource_type($ro->body) == 'stream') {
             return $this->pushStream($ro->body);
         }
 
