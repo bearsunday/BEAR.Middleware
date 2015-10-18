@@ -52,10 +52,7 @@ class StreamRenderer implements RenderInterface
     public function render(ResourceObject $ro)
     {
         if (! is_array($ro->body)) {
-            if (is_resource($ro->body)) {
-                return $this->pushStream($ro->body);
-            }
-            return $this->renderer->render($ro);
+            return $this->scalarBody($ro);
         }
         foreach ($ro->body as &$item) {
             if (is_resource($item) && get_resource_type($item) == 'stream') {
@@ -86,7 +83,7 @@ class StreamRenderer implements RenderInterface
 
 
     /**
-     * @param $item
+     * @param resource $item
      *
      * @return string
      */
@@ -139,5 +136,19 @@ class StreamRenderer implements RenderInterface
         }
 
         return $list;
+    }
+
+    /**
+     * @param ResourceObject $ro
+     *
+     * @return string
+     */
+    private function scalarBody(ResourceObject $ro)
+    {
+        if (is_resource($ro->body)) {
+            return $this->pushStream($ro->body);
+        }
+
+        return $this->renderer->render($ro);
     }
 }

@@ -36,7 +36,7 @@ final class ResourceHandler
     /**
      * @param ResourceInterface $resource
      * @param RouterInterface   $router
-     * @param resource          $stream
+     * @param RenderInterface   $render
      */
     public function __construct(
         ResourceInterface $resource,
