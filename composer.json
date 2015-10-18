@@ -12,10 +12,8 @@
           "relay/relay": "~1.0",
           "relay/middleware": "~1.0",
           "zendframework/zend-diactoros": "~1.0",
-          "bear/resource": "~1.0"
-     },
-     "require-dev": {
-          "bear/sunday": "~1.0"
+          "bear/sunday": "~1.0",
+          "bear/app-meta": "~1.0"
      },
      "autoload": {
           "psr-4": {
