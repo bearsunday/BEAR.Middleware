@@ -10,25 +10,22 @@ use BEAR\AppMeta\AbstractAppMeta;
 use BEAR\Middleware\Module\StreamModule;
 use BEAR\Package\AppMetaModule;
 use BEAR\Package\Exception\InvalidContextException;
-use Doctrine\Common\Cache\Cache;
 use Ray\Compiler\DiCompiler;
 use Ray\Compiler\Exception\NotCompiled;
 use Ray\Compiler\ScriptInjector;
 use Ray\Di\AbstractModule;
 use Ray\Di\InjectorInterface;
 
-
 class Boot
 {
-    public function getInjector(AbstractAppMeta $appMeta, $contexts, Cache $cache = null)
+    public function getInjector(AbstractAppMeta $appMeta, $contexts)
     {
-        $module = $this->getContxtualModule($appMeta, $contexts);
-        $module->override(new AppMetaModule($appMeta));
         try {
             $injector = (new ScriptInjector($appMeta->tmpDir))->getInstance(InjectorInterface::class);
         } catch (NotCompiled $e) {
-            $streamModule = new StreamModule($module);
-            $compiler = new DiCompiler($streamModule, $appMeta->tmpDir);
+            $module = $this->getContxtualModule($appMeta, $contexts);
+            $module->override(new AppMetaModule($appMeta));
+            $compiler = new DiCompiler(new StreamModule($module), $appMeta->tmpDir);
             $compiler->compile();
             $injector = (new ScriptInjector($appMeta->tmpDir))->getInstance(InjectorInterface::class);
         }
@@ -56,7 +53,6 @@ class Boot
             if (! is_a($class, AbstractModule::class, true)) {
                 throw new InvalidContextException($class);
             }
-            /* @var $module AbstractModule */
             $module = new $class($module);
         }
 
