@@ -23,7 +23,9 @@ class StreamRenderer implements RenderInterface
     private $stream;
 
     /**
-     * @var resource
+     * Pushed stream
+     *
+     * @var resource[]
      */
     private $streams;
 
@@ -51,13 +53,13 @@ class StreamRenderer implements RenderInterface
     {
         if (! is_array($ro->body)) {
             if (is_resource($ro->body)) {
-                return $this->renameStream($ro->body);
+                return $this->pushStream($ro->body);
             }
             return $this->renderer->render($ro);
         }
         foreach ($ro->body as &$item) {
             if (is_resource($item) && get_resource_type($item) == 'stream') {
-                $item = $this->renameStream($item);
+                $item = $this->pushStream($item);
             }
         }
 
@@ -78,26 +80,8 @@ class StreamRenderer implements RenderInterface
 
             return $this->stream;
         }
-        rewind($this->stream);
-        $regex = sprintf('/(%s)/', implode('|', $this->hash));
-        preg_match_all($regex, $string, $match, PREG_SET_ORDER);
-        $list = $this->collect($match);
-        $bodies = preg_split(
-            $regex,
-            $string
-        );
-        foreach ($bodies as $body) {
-            fwrite($this->stream, $body);
-            /** @var $stream \SplFileObject */
-            $index = array_shift($list);
-            if (isset($this->streams[$index])) {
-                $stream = $this->streams[$index];
-                rewind($stream);
-                stream_copy_to_stream($stream, $this->stream);
-            }
-        }
 
-        return $this->stream;
+        return $this->mergeStream($string, $this->stream);
     }
 
 
@@ -106,10 +90,10 @@ class StreamRenderer implements RenderInterface
      *
      * @return string
      */
-    private function renameStream($item)
+    private function pushStream($item)
     {
-        $id = '__RES__' . md5(uniqid());
-        $this->streams[$id] = $item;
+        $id = uniqid('STREAM_' . rand(), true) . '_';
+        $this->streams[$id] = $item; // push
         $this->hash[] = $id;
         $item = $id;
 
@@ -117,11 +101,37 @@ class StreamRenderer implements RenderInterface
     }
 
     /**
-     * @param $match
+     * @param string $string
+     * @param resource $stream
+     *
+     * @return resource
+     */
+    private function mergeStream($string, $stream)
+    {
+        rewind($stream);
+        $regex = sprintf('/(%s)/', implode('|', $this->hash));
+        preg_match_all($regex, $string, $match, PREG_SET_ORDER);
+        $list = $this->collect($match);
+        $bodies = preg_split($regex, $string);
+        foreach ($bodies as $body) {
+            fwrite($stream, $body);
+            $index = array_shift($list);
+            if (isset($this->streams[$index])) {
+                $popStream = $this->streams[$index];
+                rewind($popStream);
+                stream_copy_to_stream($popStream, $stream);
+            }
+        }
+
+        return $stream;
+    }
+
+    /**
+     * @param array $match
      *
      * @return array
      */
-    private function collect($match)
+    private function collect(array $match)
     {
         $list = [];
         foreach ($match as $item) {
