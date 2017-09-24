@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * This file is part of the BEAR.Middleware package.
+ *
+ * @license http://opensource.org/licenses/MIT MIT
+ */
 namespace BEAR\Middleware;
 
 use BEAR\Middleware\Handler\ResourceHandler;
@@ -35,18 +39,29 @@ class RequesetHandlerTest extends \PHPUnit_Framework_TestCase
         $request = ServerRequestFactory::fromGlobals();
         $request = $request->withUri(new Uri('http://localhost/not_found'));
         $requestHandler = $this->handler;
-        $requestHandler($request, new Response, function ($req, $resp) {});
+        $requestHandler($request, new Response, function ($req, $resp) {
+        });
     }
 
     public function caseProvider()
     {
         return [
-            ['http://localhost/item', '{"msg":"hello world","stream":"Konichiwa stream !
-"}'],
+            ['http://localhost/item', '{
+    "msg": "hello world",
+    "stream": "Konichiwa stream !
+"
+}
+'],
             ['http://localhost/one', 'Konichiwa stream !
 '],
-            ['http://localhost/greeting', '{"greeting":"Hello BEAR"}'],
-            ['http://localhost/greeting2', '{"value":"Hello BEAR"}']
+            ['http://localhost/greeting', '{
+    "greeting": "Hello BEAR"
+}
+'],
+            ['http://localhost/greeting2', '{
+    "value": "Hello BEAR"
+}
+']
         ];
     }
 

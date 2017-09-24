@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * This file is part of the BEAR.Middleware package.
+ *
+ * @license http://opensource.org/licenses/MIT MIT
+ */
 namespace BEAR\Middleware;
 
 use BEAR\Middleware\Handler\ResourceHandler;
@@ -21,8 +25,12 @@ class BootstrapTest extends AbstractBootTestCase
 
     public function testBootstrap()
     {
-        $this->expectOutputString('{"msg":"hello world","stream":"Konichiwa stream !
-"}');
+        $this->expectOutputString('{
+    "msg": "hello world",
+    "stream": "Konichiwa stream !
+"
+}
+');
         $this->boot = new Boot;
         $appMeta = new FakeAppMeta;
         $appMeta->name = 'BEAR\Middleware';

@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the BEAR.MiddleWare package
+ * This file is part of the BEAR.Middleware package.
  *
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -13,7 +13,7 @@ final class Resolver
     /**
      * @var InjectorInterface
      */
-    protected $injector;
+    private $injector;
 
     public function __construct(InjectorInterface $injector)
     {
