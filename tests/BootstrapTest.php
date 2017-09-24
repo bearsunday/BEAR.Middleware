@@ -21,8 +21,12 @@ class BootstrapTest extends AbstractBootTestCase
 
     public function testBootstrap()
     {
-        $this->expectOutputString('{"msg":"hello world","stream":"Konichiwa stream !
-"}');
+        $this->expectOutputString('{
+    "msg": "hello world",
+    "stream": "Konichiwa stream !
+"
+}
+');
         $this->boot = new Boot;
         $appMeta = new FakeAppMeta;
         $appMeta->name = 'BEAR\Middleware';

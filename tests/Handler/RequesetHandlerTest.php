@@ -41,12 +41,22 @@ class RequesetHandlerTest extends \PHPUnit_Framework_TestCase
     public function caseProvider()
     {
         return [
-            ['http://localhost/item', '{"msg":"hello world","stream":"Konichiwa stream !
-"}'],
+            ['http://localhost/item', '{
+    "msg": "hello world",
+    "stream": "Konichiwa stream !
+"
+}
+'],
             ['http://localhost/one', 'Konichiwa stream !
 '],
-            ['http://localhost/greeting', '{"greeting":"Hello BEAR"}'],
-            ['http://localhost/greeting2', '{"value":"Hello BEAR"}']
+            ['http://localhost/greeting', '{
+    "greeting": "Hello BEAR"
+}
+'],
+            ['http://localhost/greeting2', '{
+    "value": "Hello BEAR"
+}
+']
         ];
     }
 
