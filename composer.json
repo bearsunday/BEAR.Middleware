@@ -22,7 +22,8 @@
      "autoload": {
           "psr-4": {
                "BEAR\\Middleware\\": "src/"
-          }
+          },
+          "exclude-from-classmap": ["/tests/"]
      },
      "autoload-dev": {
           "psr-4": {
