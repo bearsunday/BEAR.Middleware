@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the BEAR.MiddleWare package
+ * This file is part of the BEAR.Middleware package.
  *
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -15,7 +15,7 @@ use Zend\Diactoros\Response;
 class MiddlewareModule extends AbstractModule
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function configure()
     {

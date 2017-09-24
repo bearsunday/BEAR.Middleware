@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the BEAR.MiddleWare package
+ * This file is part of the BEAR.Middleware package.
  *
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -84,7 +84,7 @@ class StreamRenderer implements RenderInterface
      */
     private function pushStream($item)
     {
-        $id = uniqid('STREAM_' . rand(), true) . '_';
+        $id = uniqid('STREAM_' . mt_rand(), true) . '_';
         $this->streams[$id] = $item; // push
         $this->hash[] = $id;
         $item = $id;

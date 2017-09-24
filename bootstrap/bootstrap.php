@@ -1,7 +1,8 @@
 <?php
-
 /**
- * @global string $context
+ * This file is part of the BEAR.Middleware package.
+ *
+ * @license http://opensource.org/licenses/MIT MIT
  */
 namespace __PACKAGE__\__VENDOR__;
 

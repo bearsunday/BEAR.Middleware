@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the BEAR.MiddleWare package
+ * This file is part of the BEAR.Middleware package.
  *
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -48,7 +48,7 @@ class Boot
         $module = null;
         foreach ($contextsArray as $context) {
             $class = $appMeta->name . '\Module\\' . ucwords($context) . 'Module';
-            if (!class_exists($class)) {
+            if (! class_exists($class)) {
                 $class = 'BEAR\Package\Context\\' . ucwords($context) . 'Module';
             }
             if (! is_a($class, AbstractModule::class, true)) {

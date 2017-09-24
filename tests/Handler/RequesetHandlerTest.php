@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * This file is part of the BEAR.Middleware package.
+ *
+ * @license http://opensource.org/licenses/MIT MIT
+ */
 namespace BEAR\Middleware;
 
 use BEAR\Middleware\Handler\ResourceHandler;
@@ -35,7 +39,8 @@ class RequesetHandlerTest extends \PHPUnit_Framework_TestCase
         $request = ServerRequestFactory::fromGlobals();
         $request = $request->withUri(new Uri('http://localhost/not_found'));
         $requestHandler = $this->handler;
-        $requestHandler($request, new Response, function ($req, $resp) {});
+        $requestHandler($request, new Response, function ($req, $resp) {
+        });
     }
 
     public function caseProvider()

@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the BEAR.MiddleWare package
+ * This file is part of the BEAR.Middleware package.
  *
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -49,7 +49,7 @@ final class ResourceHandler
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function __invoke(RequestInterface $request, Response $response, callable $next = null)
     {
