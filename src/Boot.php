@@ -55,7 +55,7 @@ class Boot
                 $class = 'BEAR\Package\Context\\' . ucwords($contextItem) . 'Module';
             }
             if (! is_a($class, AbstractModule::class, true)) {
-                throw new \BEAR\Package\Exception\InvalidContextException($contextItem);
+                throw new InvalidContextException($contextItem);
             }
             /* @var $module AbstractModule */
             $module = is_subclass_of($class, AbstractAppModule::class) ? new $class($appMeta, $module) : new $class($module);
