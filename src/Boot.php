@@ -63,7 +63,7 @@ class Boot
         if (! $module instanceof AbstractModule) {
             throw new InvalidModuleException; // @codeCoverageIgnore
         }
-        $module->override(new \BEAR\Package\AppMetaModule($appMeta));
+        $module->override(new AppMetaModule($appMeta));
 
         return $module;
     }
