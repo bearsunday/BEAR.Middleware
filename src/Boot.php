@@ -11,11 +11,14 @@ use BEAR\Middleware\Exception\InvalidContextException;
 use BEAR\Middleware\Module\AppMetaModule;
 use BEAR\Middleware\Module\MiddlewareModule;
 use BEAR\Middleware\Module\StreamModule;
+use BEAR\Package\AbstractAppModule;
+use BEAR\Package\Exception\InvalidModuleException;
 use Ray\Compiler\DiCompiler;
 use Ray\Compiler\Exception\NotCompiled;
 use Ray\Compiler\ScriptInjector;
 use Ray\Di\AbstractModule;
 use Ray\Di\InjectorInterface;
+use Ray\Di\NullModule;
 
 class Boot
 {
@@ -42,20 +45,25 @@ class Boot
      *
      * @return AbstractModule
      */
-    private function getContxtualModule(AbstractAppMeta $appMeta, $contexts)
+    private function getContxtualModule(AbstractAppMeta $appMeta, string $contexts)
     {
         $contextsArray = array_reverse(explode('-', $contexts));
-        $module = null;
-        foreach ($contextsArray as $context) {
-            $class = $appMeta->name . '\Module\\' . ucwords($context) . 'Module';
+        $module = new NullModule;
+        foreach ($contextsArray as $contextItem) {
+            $class = $appMeta->name . '\Module\\' . ucwords($contextItem) . 'Module';
             if (! class_exists($class)) {
-                $class = 'BEAR\Package\Context\\' . ucwords($context) . 'Module';
+                $class = 'BEAR\Package\Context\\' . ucwords($contextItem) . 'Module';
             }
             if (! is_a($class, AbstractModule::class, true)) {
-                throw new InvalidContextException($context);
+                throw new \BEAR\Package\Exception\InvalidContextException($contextItem);
             }
-            $module = new $class($module);
+            /* @var $module AbstractModule */
+            $module = is_subclass_of($class, AbstractAppModule::class) ? new $class($appMeta, $module) : new $class($module);
         }
+        if (! $module instanceof AbstractModule) {
+            throw new InvalidModuleException; // @codeCoverageIgnore
+        }
+        $module->override(new \BEAR\Package\AppMetaModule($appMeta));
 
         return $module;
     }
