@@ -16,7 +16,7 @@ class BootTest extends AbstractBootTestCase
      */
     private $boot;
 
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
         $this->boot = new Boot;

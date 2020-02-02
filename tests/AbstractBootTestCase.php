@@ -23,7 +23,7 @@ class AbstractBootTestCase extends TestCase
         $this->appMeta->tmpDir = __DIR__ . '/tmp';
     }
 
-    public function tearDown(): void
+    public function tearDown() : void
     {
         $unlink = function ($path) use (&$unlink) {
             foreach (glob(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '*') as $file) {
