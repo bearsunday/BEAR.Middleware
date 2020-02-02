@@ -6,14 +6,16 @@
  */
 namespace BEAR\Middleware;
 
-class AbstractBootTestCase extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AbstractBootTestCase extends TestCase
 {
     /**
      * @var FakeAppMeta
      */
     protected $appMeta;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
         $this->appMeta = new FakeAppMeta;
@@ -21,7 +23,7 @@ class AbstractBootTestCase extends \PHPUnit_Framework_TestCase
         $this->appMeta->tmpDir = __DIR__ . '/tmp';
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $unlink = function ($path) use (&$unlink) {
             foreach (glob(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '*') as $file) {
