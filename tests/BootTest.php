@@ -16,7 +16,7 @@ class BootTest extends AbstractBootTestCase
      */
     private $boot;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
         $this->boot = new Boot;
@@ -24,7 +24,7 @@ class BootTest extends AbstractBootTestCase
 
     public function testInvalidContext()
     {
-        $this->setExpectedException(InvalidContextException::class);
+        $this->expectException(InvalidContextException::class);
         $injector = $this->boot->getInjector($this->appMeta, 'not_valid');
         $this->assertInstanceOf(InjectorInterface::class, $injector);
     }

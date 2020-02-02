@@ -13,19 +13,20 @@ use BEAR\Resource\Module\ResourceModule;
 use BEAR\Resource\RenderInterface;
 use BEAR\Resource\ResourceInterface;
 use BEAR\Sunday\Provide\Router\WebRouter;
+use PHPUnit\Framework\TestCase;
 use Ray\Di\Injector;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\Diactoros\Uri;
 
-class RequesetHandlerTest extends \PHPUnit_Framework_TestCase
+class RequesetHandlerTest extends TestCase
 {
     /**
      * @var ResourceHandler
      */
     private $handler;
 
-    protected function setUp()
+    protected function setUp() : void
     {
         $injector = new Injector(new StreamModule(new ResourceModule(__NAMESPACE__)));
         $resource = $injector->getInstance(ResourceInterface::class);
@@ -35,7 +36,7 @@ class RequesetHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testMissingRoute()
     {
-        $this->setExpectedException(ResourceNotFoundException::class);
+        $this->expectException(ResourceNotFoundException::class);
         $request = ServerRequestFactory::fromGlobals();
         $request = $request->withUri(new Uri('http://localhost/not_found'));
         $requestHandler = $this->handler;

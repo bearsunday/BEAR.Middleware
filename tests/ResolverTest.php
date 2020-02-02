@@ -7,9 +7,10 @@
 namespace BEAR\Middleware;
 
 use BEAR\Middleware\Annotation\Stream;
+use PHPUnit\Framework\TestCase;
 use Ray\Di\Injector;
 
-class ResolverTest extends \PHPUnit_Framework_TestCase
+class ResolverTest extends TestCase
 {
     public function test__invoke()
     {
