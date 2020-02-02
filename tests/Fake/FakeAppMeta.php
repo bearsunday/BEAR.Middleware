@@ -6,7 +6,4 @@ use BEAR\AppMeta\AbstractAppMeta;
 
 class FakeAppMeta extends AbstractAppMeta
 {
-    public function getResourceListGenerator()
-    {
-    }
 }
