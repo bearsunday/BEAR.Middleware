@@ -6,7 +6,7 @@
  */
 namespace BEAR\Middleware;
 
-use BEAR\Middleware\Exception\InvalidContextException;
+use BEAR\Package\Exception\InvalidContextException;
 use Ray\Di\InjectorInterface;
 
 class BootTest extends AbstractBootTestCase
