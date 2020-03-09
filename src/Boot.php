@@ -7,7 +7,6 @@
 namespace BEAR\Middleware;
 
 use BEAR\AppMeta\AbstractAppMeta;
-use BEAR\Middleware\Module\AppMetaModule;
 use BEAR\Middleware\Module\MiddlewareModule;
 use BEAR\Middleware\Module\StreamModule;
 use BEAR\Package\Module;
@@ -24,7 +23,7 @@ class Boot
             $injector = (new ScriptInjector($appMeta->tmpDir))->getInstance(InjectorInterface::class);
         } catch (NotCompiled $e) {
             $module = (new Module)($appMeta, $contexts);
-            $module->override(new MiddlewareModule(new AppMetaModule($appMeta)));
+            $module->override(new MiddlewareModule());
             $compiler = new DiCompiler(new StreamModule($module), $appMeta->tmpDir);
             $compiler->compile();
             $injector = (new ScriptInjector($appMeta->tmpDir))->getInstance(InjectorInterface::class);
