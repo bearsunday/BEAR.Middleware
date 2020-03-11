@@ -4,8 +4,10 @@
  *
  * @license http://opensource.org/licenses/MIT MIT
  */
-namespace BEAR\Middleware\Exception;
+namespace BEAR\Middleware\Module;
 
-class InvalidContextException extends LogicException
+use BEAR\Sunday\Extension\Application\AbstractApp;
+
+class App extends AbstractApp
 {
 }
